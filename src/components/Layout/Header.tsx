@@ -1,0 +1,149 @@
+import React, { useState, useEffect } from "react";
+import { NavLink } from "react-router-dom";
+import { Menu, X } from "lucide-react";
+
+const NAV_LINKS = [
+  { to: "/",           label: "Home"       },
+  { to: "/about",      label: "About"      },
+  { to: "/predict",    label: "Predict"    },
+  { to: "/how-to-use", label: "How to Use" },
+  { to: "/faqs",       label: "FAQs"       },
+  { to: "/contact",    label: "Contact"    },
+];
+
+const Header: React.FC = () => {
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 12);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const linkClass = ({ isActive }: { isActive: boolean }) =>
+    [
+      "relative text-[13px] font-medium tracking-wide transition-colors duration-200 px-1 pb-0.5",
+      isActive
+        ? "text-white after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:rounded-full after:bg-white"
+        : "text-white/55 hover:text-white/90",
+    ].join(" ");
+
+  return (
+    <header
+      className="sticky top-0 z-50 transition-all duration-300"
+      style={{
+        background: scrolled
+          ? "rgba(10,10,10,0.97)"
+          : "rgba(14,14,14,0.95)",
+        borderBottom: "1px solid rgba(255,255,255,0.07)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
+        boxShadow: scrolled ? "0 2px 24px rgba(0,0,0,0.4)" : "none",
+      }}
+    >
+      <div className="max-w-6xl mx-auto px-5 h-[60px] flex items-center justify-between gap-8">
+
+        {/* Logo */}
+        <NavLink to="/" className="flex items-center gap-2.5 flex-shrink-0 group">
+          <div
+            className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-[11px] font-black tracking-tight"
+            style={{ background: "linear-gradient(135deg, rgb(0 34 157), rgb(0 0 0))" }}
+          >
+            MEV
+          </div>
+          <div className="flex flex-col leading-none">
+            <span className="text-[15px] font-bold text-white tracking-tight">MultiEV</span>
+            <span className="text-[10px] font-medium tracking-widest uppercase" style={{ color: "rgb(190 188 227)" }}>
+              Intelligence
+            </span>
+          </div>
+        </NavLink>
+
+        {/* Desktop nav */}
+        <nav className="hidden lg:flex items-center gap-6">
+          {NAV_LINKS.map(({ to, label }) => (
+            <NavLink key={to} to={to} className={linkClass} end={to === "/"}>
+              {label}
+            </NavLink>
+          ))}
+          <a
+            href="https://cosylab.iiitd.edu.in/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[13px] font-medium transition-colors"
+            style={{ color: "rgba(255,255,255,0.4)" }}
+            onMouseEnter={e => ((e.target as HTMLElement).style.color = "rgba(255,255,255,0.8)")}
+            onMouseLeave={e => ((e.target as HTMLElement).style.color = "rgba(255,255,255,0.4)")}
+          >
+            CoSyLab ↗
+          </a>
+        </nav>
+
+        {/* CTA */}
+        <NavLink
+          to="/predict"
+          className="hidden lg:inline-flex items-center gap-2 px-4 py-2 rounded-lg text-[13px] font-semibold text-white transition-all duration-200 hover:opacity-90 active:scale-95"
+          style={{ background: "linear-gradient(135deg, rgb(0 34 157), rgb(0 0 0))" }}
+        >
+          Run Prediction →
+        </NavLink>
+
+        {/* Mobile hamburger */}
+        <button
+          className="lg:hidden w-9 h-9 rounded-lg flex items-center justify-center transition-colors"
+          style={{ color: "rgba(255,255,255,0.7)" }}
+          onClick={() => setOpen(!open)}
+          onMouseEnter={e => ((e.currentTarget as HTMLElement).style.background = "rgba(255,255,255,0.07)")}
+          onMouseLeave={e => ((e.currentTarget as HTMLElement).style.background = "transparent")}
+          aria-label="Toggle menu"
+        >
+          {open ? <X size={20} /> : <Menu size={20} />}
+        </button>
+      </div>
+
+      {/* Mobile menu */}
+      {open && (
+        <div
+          className="lg:hidden"
+          style={{ background: "#0e0e0e", borderTop: "1px solid rgba(255,255,255,0.07)" }}
+        >
+          <nav className="max-w-6xl mx-auto px-5 py-3 flex flex-col gap-1">
+            {NAV_LINKS.map(({ to, label }) => (
+              <NavLink
+                key={to}
+                to={to}
+                end={to === "/"}
+                onClick={() => setOpen(false)}
+                className={({ isActive }) =>
+                  `px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors ${
+                    isActive
+                      ? "text-white"
+                      : "text-white/50 hover:text-white/80 hover:bg-white/05"
+                  }`
+                }
+                style={({ isActive }) =>
+                  isActive ? { background: "rgba(255,255,255,0.07)" } : {}
+                }
+              >
+                {label}
+              </NavLink>
+            ))}
+            <a
+              href="https://cosylab.iiitd.edu.in/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-3 py-2.5 rounded-lg text-[14px] font-medium transition-colors"
+              style={{ color: "rgba(255,255,255,0.4)" }}
+              onClick={() => setOpen(false)}
+            >
+              CoSyLab ↗
+            </a>
+          </nav>
+        </div>
+      )}
+    </header>
+  );
+};
+
+export default Header;

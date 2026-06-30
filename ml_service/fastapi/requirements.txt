@@ -1,0 +1,15 @@
+fastapi>=0.111.0
+uvicorn[standard]>=0.30.0
+pydantic>=2.0.0
+
+# ML stack
+numpy
+scikit-learn
+xgboost
+tensorflow
+transformers
+peft
+torch
+sentencepiece
+safetensors
+joblib
