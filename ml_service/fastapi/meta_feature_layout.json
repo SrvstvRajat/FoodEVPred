@@ -1,0 +1,18 @@
+{
+  "base_model_order": [
+    "LR",
+    "SVM_RBF",
+    "MLP"
+  ],
+  "class_order": [
+    0,
+    1,
+    2
+  ],
+  "class_labels": [
+    0,
+    1,
+    2
+  ],
+  "layout": "for each model in base_model_order (in order): [P(class_0), P(class_1), P(class_2)] concatenated -> 9-dim vector"
+}

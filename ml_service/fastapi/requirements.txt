@@ -1,15 +1,17 @@
+# Web framework
 fastapi>=0.111.0
 uvicorn[standard]>=0.30.0
 pydantic>=2.0.0
 
-# ML stack
-numpy
-scikit-learn
-xgboost
-tensorflow
-transformers
-peft
+# ML stack (ProtT5-XL + stacked ensemble)
+numpy==2.4.6
+pandas==2.3.3
+scikit-learn==1.6.1
+xgboost==3.2.0
+joblib==1.5.3
 torch
+transformers
 sentencepiece
-safetensors
-joblib
+
+# Required only if HF_REPO_ID is set (Mode B: downloading your own artefacts)
+huggingface_hub

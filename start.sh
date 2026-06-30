@@ -43,9 +43,12 @@ echo "🚀 Starting multiev System..."
 # ── ML Service ─────────────────────────────
 echo "🧠 Starting ML service..."
 cd ml_service/fastApi
-KMP_DUPLICATE_LIB_OK=TRUE OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 ~/.pyenv/versions/3.12.2/envs/myenv312/bin/python -m uvicorn app:app --port 8000 --reload &
+HF_HUB_OFFLINE=1 HF_HUB_DISABLE_XET=1 KMP_DUPLICATE_LIB_OK=TRUE OMP_NUM_THREADS=1 MKL_NUM_THREADS=1 ~/.pyenv/versions/3.12.2/envs/myenv312/bin/python -m uvicorn app:app --port 8000 --reload &
 ML_PID=$!
 cd ../../
+
+# if you ever need to re-download (new machine, cleared cache, updated model), temporarily drop HF_HUB_OFFLINE=1 for that one run so it can fetch fresh, then add it back.
+
 
 # ── Backend ───────────────────────────────
 echo "🔧 Starting Backend..."
