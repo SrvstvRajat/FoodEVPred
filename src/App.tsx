@@ -6,6 +6,7 @@ import Footer from "./components/Layout/Footer";
 
 import Home from "./pages/Home";
 import Predict from "./pages/Predict";
+//optional for future use
 // import Search from "./pages/Search";
 import HowToUse from "./pages/HowToUse";
 import Contact from "./pages/Contact";
