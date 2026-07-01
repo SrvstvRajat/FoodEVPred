@@ -107,7 +107,6 @@ export const getPredictionStatus = async (
 ): Promise<void> => {
 
   const { jobId } = req.params;
-  console.log(jobId);
 
   const data = await redisClient.get(`job:${jobId}`);
 
@@ -118,9 +117,12 @@ export const getPredictionStatus = async (
     });
     return;
   }
-
+  const jobData = JSON.parse(data);
+  if(jobData.status === 'COMPLETED') {
+    console.info(`Job ${jobId} status: ${jobData.status}`);
+  }
   res.status(200).json({
     success: true,
-    data: JSON.parse(data)
+    data: jobData
   });
 };
