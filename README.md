@@ -189,8 +189,8 @@ Copy and fill in the `.env` files described above.
 **5. Launch all services**
 
 ```bash
-chmod +x start.sh
-./start.sh
+chmod +x runScript.sh
+./runScript.sh
 ```
 
 All three services start in a single terminal with colour-coded log prefixes (`[ML]`, `[BE]`, `[FE]`). Press `Ctrl+C` to stop everything cleanly.
