@@ -286,8 +286,6 @@ const Predict: React.FC = () => {
     setBatchSubmitted(false);
 
     try {
-      // Must use multipart/form-data — backend uses multer to parse the file.
-      // Do NOT set Content-Type manually; fetch sets it with the correct boundary.
       const formData = new FormData();
       formData.append("name", batchName.trim());
       formData.append("email", batchEmail.trim());

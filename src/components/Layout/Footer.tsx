@@ -50,13 +50,7 @@ const Footer: React.FC = () => {
               </div>
             </div>
 
-            {/* <p
-              className="text-sm leading-relaxed max-w-sm mb-8"
-              style={{ color: "rgba(241,244,249,0.55)" }}
-            >
-              Multi-class classification of food-derived extracellular vesicle proteins
-              from protein sequence alone — no docking, no structural data.
-            </p> */}
+      
 
             {/* IIITD Logo */}
             <div className="flex items-center gap-4">
