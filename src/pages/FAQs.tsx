@@ -102,8 +102,8 @@ const faqs: FAQItem[] = [
     a: (
       <p className="text-sm leading-relaxed" style={{ color: T.muted }}>
         We welcome contributions, bug reports, and suggestions. Please contact us at{" "}
-        <a href="mailto:bagler+multiev@iiitd.ac.in" className="font-medium hover:underline" style={{ color: T.primary }}>
-          bagler+multiev@iiitd.ac.in
+        <a href="mailto:bagler+foodevpred@iiitd.ac.in" className="font-medium hover:underline" style={{ color: T.primary }}>
+          bagler+foodevpred@iiitd.ac.in
         </a>.
       </p>
     ),
@@ -114,7 +114,7 @@ const faqs: FAQItem[] = [
       <div className="font-mono text-sm rounded-lg p-4" style={{ background: T.ink, border: `1px solid ${T.hairline}` }}>
         <p className="font-mono text-[11px] uppercase tracking-[0.12em] mb-2" style={{ color: T.primary }}>Citation</p>
         <p className="italic leading-relaxed" style={{ color: T.muted }}>
-          [Author(s)]. EVSource Predictor: Computational Multi-Class Classification of Food-Derived Extracellular Vesicle Proteins. [Journal], [Year].
+          [Author(s)]. FoodEVPred: A Sequence-Based Deep Learning Framework for Multi-Class Prediction of Food-Derived Extracellular Vesicle Cargo Proteins for Oral Therapeutic Delivery. [Journal], [2026].
         </p>
       </div>
     ),
@@ -122,7 +122,7 @@ const faqs: FAQItem[] = [
 ];
 
 const FAQs: React.FC = () => {
-  const [openIndex,  setOpenIndex]  = useState<number | null>(null);
+  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   const filtered = faqs.filter(item =>
@@ -213,8 +213,8 @@ const FAQs: React.FC = () => {
             <p className="text-sm font-semibold mb-0.5" style={{ color: T.text }}>Still have questions?</p>
             <p className="text-xs" style={{ color: T.muted }}>
               Reach us at{" "}
-              <a href="mailto:bagler+multiev@iiitd.ac.in" className="font-semibold hover:underline" style={{ color: T.primary }}>
-                bagler+multiev@iiitd.ac.in
+              <a href="mailto:bagler+foodevpred@iiitd.ac.in" className="font-semibold hover:underline" style={{ color: T.primary }}>
+                bagler+foodevpred@iiitd.ac.in
               </a>
             </p>
           </div>

@@ -3,12 +3,11 @@ import { NavLink } from "react-router-dom";
 import { Menu, X } from "lucide-react";
 
 const NAV_LINKS = [
-  { to: "/",           label: "Home"       },
-  { to: "/about",      label: "About"      },
-  { to: "/predict",    label: "Predict"    },
+  { to: "/", label: "Home" },
+  { to: "/predict", label: "Predict" },
   { to: "/how-to-use", label: "How to Use" },
-  { to: "/faqs",       label: "FAQs"       },
-  { to: "/contact",    label: "Contact"    },
+  { to: "/faqs", label: "FAQs" },
+  { to: "/contact", label: "Contact" },
 ];
 
 const T = {
@@ -49,10 +48,10 @@ const Header: React.FC = () => {
             className="font-mono w-8 h-8 rounded-lg flex items-center justify-center text-white text-[11px] font-bold tracking-tight"
             style={{ background: T.primary }}
           >
-            MEV
+            FEP
           </div>
           <div className="flex flex-col leading-none">
-            <span className="font-display text-[15px] font-semibold" style={{ color: T.text }}>MultiEV</span>
+            <span className="font-display text-[15px] font-semibold" style={{ color: T.text }}>FoodEVPred</span>
             <span className="font-mono text-[9px] font-medium tracking-[0.15em] uppercase" style={{ color: T.primary }}>
               Intelligence
             </span>

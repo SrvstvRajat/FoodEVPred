@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # -----------------------------------------------------------------------------
-# MultiEV - Development Server Launcher
+# FoodEVPred - Development Server Launcher
 # Starts the ML service (FastAPI), Backend (Express), and Frontend (React)
 # as background processes and tears them all down cleanly on exit.
 #
@@ -156,7 +156,7 @@ trap cleanup EXIT INT TERM
 
 # -- Main ----------------------------------------------------------------------
 separator
-printf '%s\n' "${BOLD}  MultiEV - Development Server${RESET}"
+printf '%s\n' "${BOLD}  FoodEVPred - Development Server${RESET}"
 separator
 
 preflight_check

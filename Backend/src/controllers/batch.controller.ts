@@ -151,7 +151,7 @@ const emailShell = (content: string) => `
               EV · MultiClass
             </p>
             <h1 style="margin:0;font-size:22px;font-weight:700;color:#F4F8F5;letter-spacing:-0.5px;">
-              MultiEV
+              FoodEVPred
             </h1>
             <p style="margin:6px 0 0;font-size:12px;color:#5F6E66;">
               Extracellular Vesicle Protein Source Classifier
@@ -171,8 +171,8 @@ const emailShell = (content: string) => `
           <td style="background:#F4F8F5;border-radius:0 0 12px 12px;padding:20px 40px;text-align:center;border-top:1px solid #E2E8E4;">
             <p style="margin:0;font-size:12px;color:#8A97A6;">
               CoSyLab · IIIT Delhi &nbsp;·&nbsp;
-              <a href="mailto:bagler+multiev@iiitd.ac.in" style="color:#1F9E88;text-decoration:none;">
-                bagler+multiev@iiitd.ac.in
+              <a href="mailto:bagler+foodevpred@iiitd.ac.in" style="color:#1F9E88;text-decoration:none;">
+                bagler+foodevpred@iiitd.ac.in
               </a>
             </p>
           </td>
@@ -184,7 +184,7 @@ const emailShell = (content: string) => `
 </body>
 </html>
 `;
- 
+
 // ── Helper: send submission confirmation to user ───────────────────────────────
 const sendUserConfirmation = async (
   transporter: nodemailer.Transporter,
@@ -194,9 +194,9 @@ const sendUserConfirmation = async (
   sequenceCount: number
 ) => {
   await transporter.sendMail({
-    from: `"MultiEV" <${process.env.SMTP_USER}>`,
+    from: `"FoodEVPred" <${process.env.SMTP_USER}>`,
     to: toEmail,
-    subject: "MultiEV — Batch Job Received",
+    subject: "FoodEVPred — Batch Job Received",
     html: emailShell(`
       <h2 style="margin:0 0 8px;font-size:20px;font-weight:700;color:#16211C;">
         Job received, ${toName}.
@@ -238,7 +238,7 @@ const sendUserConfirmation = async (
  
       <p style="margin:0;font-size:12px;color:#8A97A6;line-height:1.5;">
         If you did not submit this request, please ignore this email or contact us at
-        <a href="mailto:bagler+multiev@iiitd.ac.in" style="color:#1F9E88;">bagler+multiev@iiitd.ac.in</a>.
+        <a href="mailto:bagler+foodevpred@iiitd.ac.in" style="color:#1F9E88;">bagler+foodevpred@iiitd.ac.in</a>.
       </p>
     `),
   });
@@ -254,12 +254,12 @@ const sendUserResults = async (
   csvContent: string
 ) => {
   const resultFilename = filename.replace(/\.[^.]+$/, "_results.csv");
- 
+
   await transporter.sendMail({
-    from: `"MultiEV" <${process.env.SMTP_USER}>`,
+    from: `"FoodEVPred" <${process.env.SMTP_USER}>`,
     to: toEmail,
-    subject: "MultiEV — Your Prediction Results Are Ready",
-    html:emailShell(`
+    subject: "FoodEVPred — Your Prediction Results Are Ready",
+    html: emailShell(`
       <h2 style="margin:0 0 8px;font-size:20px;font-weight:700;color:#16211C;">
         Results ready, ${toName}.
       </h2>
@@ -298,7 +298,7 @@ const sendUserResults = async (
  
       <p style="margin:0;font-size:12px;color:#8A97A6;line-height:1.5;">
         Questions about your results? Contact us at
-        <a href="mailto:bagler+multiev@iiitd.ac.in" style="color:#1F9E88;">bagler+multiev@iiitd.ac.in</a>.
+        <a href="mailto:bagler+foodevpred@iiitd.ac.in" style="color:#1F9E88;">bagler+foodevpred@iiitd.ac.in</a>.
       </p>
     `),
     attachments: [
@@ -323,11 +323,11 @@ const sendAdminNotification = async (
 ) => {
   const adminEmail = process.env.ADMIN_EMAIL || process.env.SMTP_USER!;
   const submittedAt = new Date().toLocaleString("en-IN", { timeZone: "Asia/Kolkata", dateStyle: "medium", timeStyle: "short" });
- 
+
   await transporter.sendMail({
-    from: `"MultiEV Jobs" <${process.env.SMTP_USER}>`,
+    from: `"FoodEVPred Jobs" <${process.env.SMTP_USER}>`,
     to: adminEmail,
-    subject: `[MultiEV] New Batch Job — ${userName} (${sequenceCount} sequences)`,
+    subject: `[FoodEVPred] New Batch Job — ${userName} (${sequenceCount} sequences)`,
     html: emailShell(`
       <h2 style="margin:0 0 8px;font-size:20px;font-weight:700;color:#16211C;">
         New Batch Job Submitted

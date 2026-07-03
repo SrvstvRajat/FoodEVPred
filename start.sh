@@ -2,7 +2,7 @@
 
 set -e
 
-echo "🚀 Starting multiev System..."
+echo "🚀 Starting FoodEVPred System..."
 
 # ── ML Service ─────────────────────────────
 echo "🧠 Starting ML service..."

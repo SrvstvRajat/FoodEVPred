@@ -1,6 +1,6 @@
-# MultiEV — Food-Derived EV Protein Source Classifier
+# FoodEVPred — Food-Derived EV Protein Source Classifier
 
-A web server for multi-class classification of food-derived extracellular vesicle (EV) cargo proteins. Given a protein sequence, MultiEV predicts whether it originates from a **Milk EV**, **Plant EV**, or **Non-EV** source.
+A web server for multi-class classification of food-derived extracellular vesicle (EV) cargo proteins. Given a protein sequence, FoodEVPred predicts whether it originates from a **Milk EV**, **Plant EV**, or **Non-EV** source.
 
 ---
 
@@ -40,7 +40,7 @@ A web server for multi-class classification of food-derived extracellular vesicl
 ## Project Structure
 
 ```
-MultiEV/
+FoodEVPred/
 ├── start.sh                     # Development launcher (this repo root)
 ├── Frontend/                    # React + TypeScript frontend
 │   └── src/
@@ -146,7 +146,7 @@ HF_TOKEN=
 
 ```bash
 git clone <repo-url>
-cd MultiEV
+cd FoodEVPred
 
 # Frontend
 npm install
@@ -357,9 +357,9 @@ service — please don't assume "it was cached on the dev machine" carries over 
 ## Citation
 
 ```
-[Author(s)]. MultiEV: Multi-Class Classification of Food-Derived Extracellular
+[Author(s)]. FoodEVPred: Multi-Class Classification of Food-Derived Extracellular
 Vesicle Proteins. [Journal / Conference], [Year]. doi: [your-doi-here]
 ```
 
-Contact: [bagler+multiev@iiitd.ac.in](mailto:bagler+multiev@iiitd.ac.in)  
+Contact: [bagler+foodevpred@iiitd.ac.in](mailto:bagler+foodevpred@iiitd.ac.in)  
 CoSyLab · IIIT Delhi · https://cosylab.iiitd.edu.in/

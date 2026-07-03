@@ -41,28 +41,22 @@ const Footer: React.FC = () => {
                 className="font-mono w-11 h-11 rounded-xl flex items-center justify-center text-[#0A140F] text-[11px] font-bold tracking-tight"
                 style={{ background: T.primary }}
               >
-                MEV
+                FEP
               </div>
               <div>
                 <span className="font-display text-xl font-semibold block leading-none" style={{ color: T.text }}>
-                  MultiEV
-                </span>
-                <span
-                  className="font-mono text-[10px] font-medium uppercase tracking-[0.2em]"
-                  style={{ color: T.primary }}
-                >
-                  Intelligence
+                  FoodEVPred
                 </span>
               </div>
             </div>
 
-            <p
+            {/* <p
               className="text-sm leading-relaxed max-w-sm mb-8"
               style={{ color: "rgba(241,244,249,0.55)" }}
             >
               Multi-class classification of food-derived extracellular vesicle proteins
               from protein sequence alone — no docking, no structural data.
-            </p>
+            </p> */}
 
             {/* IIITD Logo */}
             <div className="flex items-center gap-4">
@@ -98,13 +92,13 @@ const Footer: React.FC = () => {
               <li className="flex gap-3 items-start pt-1">
                 <Mail size={14} className="flex-shrink-0 mt-0.5" style={{ color: T.primary }} />
                 <a
-                  href="mailto:bagler+multiev@iiitd.ac.in"
+                  href="mailto:bagler+foodevpred@iiitd.ac.in"
                   className="text-sm transition-colors"
                   style={{ color: "rgba(241,244,249,0.65)" }}
                   onMouseEnter={(e) => ((e.target as HTMLElement).style.color = T.text)}
                   onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "rgba(241,244,249,0.65)")}
                 >
-                  bagler+multiev@iiitd.ac.in
+                  bagler+foodevpred@iiitd.ac.in
                 </a>
               </li>
 
@@ -182,7 +176,7 @@ const Footer: React.FC = () => {
           {/* Copyright */}
           <div className="text-center md:text-right">
             <p className="text-sm mb-0.5" style={{ color: "rgba(241,244,249,0.4)" }}>
-              © 2026 MultiEV. All rights reserved.
+              © 2026 FoodEVPred. All rights reserved.
             </p>
             <p className="text-xs" style={{ color: "rgba(241,244,249,0.25)" }}>
               Indraprastha Institute of Information Technology Delhi

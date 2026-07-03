@@ -11,16 +11,13 @@ import Predict from "./pages/Predict";
 import HowToUse from "./pages/HowToUse";
 import Contact from "./pages/Contact";
 import FAQs from "./pages/FAQs";
-import About from "./pages/About";
 
 const App: React.FC = () => {
   return (
-    <BrowserRouter basename="/multiev">
+    <BrowserRouter basename="/foodevpred">
       <Header />
       <Routes>
-        {/* Redirect root → /multiev */}
         <Route path="/" element={<Home />} />
-        <Route path="/about" element={<About />} />
         <Route path="/predict" element={<Predict />} />
         {/* <Route path="/search" element={<Search />} /> */}
         <Route path="/how-to-use" element={<HowToUse />} />

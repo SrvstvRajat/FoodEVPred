@@ -59,13 +59,13 @@ const Contact: React.FC = () => {
                     Email
                   </p>
                   <a
-                    href="mailto:bagler+multiev@iiitd.ac.in"
+                    href="mailto:bagler+foodevpred@iiitd.ac.in"
                     className="text-sm transition-colors"
                     style={{ color: "rgba(241,244,249,0.75)" }}
                     onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "#F1F4F9")}
                     onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "rgba(241,244,249,0.75)")}
                   >
-                    bagler+multiev@iiitd.ac.in
+                    bagler+foodevpred@iiitd.ac.in
                   </a>
                 </div>
               </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BookOpen, FileText, Mail, Info, CheckCircle } from "lucide-react";
-import SequenceImg  from "../images/Sequence.png";
+import SequenceImg from "../images/Sequence.png";
 import BatchFileImg from "../images/Batch.png";
 
 const T = {
@@ -59,25 +59,15 @@ const HowToUse: React.FC = () => {
   const [tab, setTab] = useState<HelpTab>("overview");
 
   const tabs: { id: HelpTab; Icon: React.ElementType; label: string }[] = [
-    { id: "overview",  Icon: Info,     label: "Overview"     },
-    { id: "molecule",  Icon: FileText, label: "Sequence"     },
-    { id: "batchFile", Icon: Mail,     label: "Batch File"   },
+    { id: "overview", Icon: Info, label: "Overview" },
+    { id: "molecule", Icon: FileText, label: "Sequence" },
+    { id: "batchFile", Icon: Mail, label: "Batch File" },
   ];
 
   return (
     <div style={{ background: T.ink }} className="min-h-screen font-body">
       <FontLoader />
       <main className="max-w-6xl mx-auto px-5 py-14">
-
-        {/* Header */}
-        <div className="mb-10">
-          <p className="font-mono text-[11px] uppercase tracking-[0.15em] mb-2.5" style={{ color: T.primary }}>
-            <BookOpen size={11} className="inline mr-1.5 -mt-0.5" />
-            User guide
-          </p>
-          <h1 className="font-display text-4xl font-semibold tracking-tight mb-2" style={{ color: T.text }}>How To Use</h1>
-          <p style={{ color: T.muted }}>Learn how to use MultiEV effectively.</p>
-        </div>
 
         <div className="grid lg:grid-cols-4 gap-6">
 
@@ -108,7 +98,7 @@ const HowToUse: React.FC = () => {
 
             {tab === "overview" && (
               <>
-                <ImageBox label="MultiEV — Platform Overview" Icon={Info} img={SequenceImg} />
+                <ImageBox label="FoodEVPred — Platform Overview" Icon={Info} img={SequenceImg} />
                 <div className="rounded-2xl p-6" style={{ background: T.surface, border: `1px solid ${T.hairline}` }}>
                   <h3 className="font-display text-sm font-semibold mb-4" style={{ color: T.text }}>Platform Highlights</h3>
                   <div className="grid sm:grid-cols-2 gap-3">
