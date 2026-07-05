@@ -105,9 +105,9 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="mt-10 pt-8" style={{ borderTop: "1px solid rgba(241,244,249,0.08)" }}>
-              <p className="font-display text-sm font-semibold" style={{ color: "#F1F4F9" }}>Prof. Ganesh Bagler</p>
+              <p className="font-display text-sm font-semibold" style={{ color: "#F1F4F9" }}>Professor Ganesh Bagler</p>
               <p className="text-xs mt-0.5 mb-3" style={{ color: "rgba(241,244,249,0.4)" }}>
-                Principal Investigator, CoSyLab
+                  <b>HOD, Computational Biology Department</b>
               </p>
               <a
                 href="https://cosylab.iiitd.edu.in/"

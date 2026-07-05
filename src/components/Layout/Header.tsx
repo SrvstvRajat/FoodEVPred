@@ -52,9 +52,6 @@ const Header: React.FC = () => {
           </div>
           <div className="flex flex-col leading-none">
             <span className="font-display text-[15px] font-semibold" style={{ color: T.text }}>FoodEVPred</span>
-            <span className="font-mono text-[9px] font-medium tracking-[0.15em] uppercase" style={{ color: T.primary }}>
-              Intelligence
-            </span>
           </div>
         </NavLink>
 

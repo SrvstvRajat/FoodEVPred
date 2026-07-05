@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
-  Dna, Upload, Loader2, X, FlaskConical, AlertCircle, CheckCircle2,
+  Dna, Upload, Loader2, X, FlaskConical, AlertCircle, CheckCircle2, FileText, ArrowRight,
 } from "lucide-react";
 
 
@@ -55,6 +55,12 @@ interface PredictionResult {
 
 const API = process.env.REACT_APP_API_URL || "http://localhost:5001/api";
 
+
+
+//To remember the class info for the three classes, we can use a record with the class name as the key and an object containing the color and background color as the value.
+// 0. `Non-EV`
+// 1. `Milk-based EV`
+// 2. `Plant-based EV`
 const CLASS_INFO: Record<string, { color: string; bg: string }> = {
   "Non-EV": { color: T.slate, bg: T.slateDim },
   "Milk-based EV": { color: T.primary, bg: T.primaryDim },
@@ -62,11 +68,44 @@ const CLASS_INFO: Record<string, { color: string; bg: string }> = {
 };
 
 const SAMPLE_SEQUENCES = [
-  "MKTAYIAKQRQISFVKSHFSRQLEERLGLIEVQAPILSRVGDGTQDNLSG",
-  "MKVLILACLVAVAVQGASREQLTEWTSSNVMEERWDSTEYQMMEEDQSALEM",
-  "ACDEFGHIKLMNPQRSTVWY",
-  "MGSSHHHHHHSSGLVPRGSHMASMTGGQQMGRDLYDDDDKDPNSSSVDKLAAALEHHHHHH",
+  "MAGILFEDIFEDVKDIDPEGKKFDRVSLHCESESFKMDLILDVNIQIYPVDLGDKFRLVIASTLYEDGTLDDGEYNPTDDRPSRADQFEYVMYGKVYRIEGDETSAEAATRLSAYVASYGGLLMRLQGDANNLHGFEVDSRVYLLMKKLAF",
+  "MALKSLVLLSLLVLVLLLVRVQPSLGKETAAAKFERQHMDSSTSAASSSYNCNQMMKSRNLTKDRCKPVNTFVHESLADVEQAVCSQKNVACKNGNQTNCYQSYSTMSITDCRETGSSKYPNCAYKTQANKNIIVACEGNPYVPVHFDASV",
+  "MSKRKTEKPKVETVTLGPSVREGERQVFGVVHIFASFNDTFIHVTDLSGRERTLVRITGGMKVKADRDSSRPYAAMLAAQDVAQRCKRLGITAMHVKLRATGGNKTKPGPGAQSALRALRSGMKIGRIERDVTPIPTDSTRRRKGGRRGRRL",
+  "MPKNKGKGGKNRKRGKNEADDEKRELIFIKDEDGQEYAQVLRMLGNGKRCDVMCIDGVKRLCHIRGKMHKKVWIAAGDIILVGLRDYQDRKADVILKYMSDEARLLKAYGELRPENTRELNREGIVGDLDDDDRDVFVFVVGSLFQLVLSNLRYISS",
+  "MKDEVALLASVTLLGVLLQAYFSRLQVISARRAFRVSRPPLTTGPPREFEQRIYRAQVNCSREYFPLFLRRAMLWVAGIFRHEGAARALCGLVYLFARRLRYFQGYARSAQQRLAPLYASARRALWLLVALARALGLRLAHFLPAELRAALRLGQLRKLLLRS",
 ];
+
+// Labels matching SAMPLE_SEQUENCES order (for Load Sample display only)
+const SAMPLE_LABELS = [
+  "Milk-based EV",
+  "Milk-based EV",
+  "Plant-based EV",
+  "Plant-based EV",
+  "Non-EV",
+];
+
+// ─── Sample file download helpers ─────────────────────────────────────────────
+const buildFasta = () =>
+  SAMPLE_SEQUENCES.map((seq, i) => `>sample_${i + 1} | ${SAMPLE_LABELS[i]}\n${seq}`).join("\n\n");
+const buildTxt = () => SAMPLE_SEQUENCES.join("\n");
+const buildCsv = () =>
+  ["sequence,label", ...SAMPLE_SEQUENCES.map((seq, i) => `${seq},${SAMPLE_LABELS[i]}`)].join("\n");
+
+const SAMPLE_FILES = [
+  { label: "FASTA Format",  ext: ".fasta", Icon: Dna,      filename: "multiev_sample.fasta", content: buildFasta() },
+  { label: "Text Format",   ext: ".txt",   Icon: FileText,  filename: "multiev_sample.txt",   content: buildTxt()   },
+  { label: "CSV Format",    ext: ".csv",   Icon: FileText,  filename: "multiev_sample.csv",   content: buildCsv()   },
+];
+
+const downloadSample = (filename: string, content: string) => {
+  const blob = new Blob([content], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+};
 
 // ─── Toast ────────────────────────────────────────────────────────────────────
 
@@ -286,6 +325,8 @@ const Predict: React.FC = () => {
     setBatchSubmitted(false);
 
     try {
+      // Must use multipart/form-data — backend uses multer to parse the file.
+      // Do NOT set Content-Type manually; fetch sets it with the correct boundary.
       const formData = new FormData();
       formData.append("name", batchName.trim());
       formData.append("email", batchEmail.trim());
@@ -339,6 +380,7 @@ const Predict: React.FC = () => {
             milk-derived, or plant-derived extracellular vesicle protein.
           </p>
         </div>
+
 
         {/* Tabs */}
         <div className="flex gap-2 mb-5" role="tablist">
@@ -551,6 +593,42 @@ const Predict: React.FC = () => {
               )}
             </>
           )}
+        </div>
+           {/* ── Sample Data Downloads ──────────────────────────────────────────── */}
+        <div className={`p-6 mb-6 ${cardClass}`} style={cardStyle}>
+          <div className="flex items-center justify-between mb-4">
+            <div>
+              <p className="font-mono text-[11px] uppercase tracking-[0.15em] mb-0.5" style={{ color: T.muted }}>
+                Sample Data
+              </p>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-3 gap-3">
+            {SAMPLE_FILES.map(({ label, ext, Icon, filename, content }) => (
+              <div
+                key={ext}
+                className="rounded-xl p-4 flex items-center gap-3 group cursor-pointer transition-all hover:-translate-y-0.5 hover:shadow-md"
+                style={{ background: T.ink, border: `1px solid ${T.hairline}` }}
+                onClick={() => downloadSample(filename, content)}
+              >
+                <div
+                  className="w-9 h-9 rounded-lg flex items-center justify-center flex-shrink-0"
+                  style={{ background: T.primaryDim, color: T.primary }}
+                >
+                  <Icon size={16} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold" style={{ color: T.text }}>{label}</p>
+                  <p className="font-mono text-xs mt-0.5" style={{ color: T.muted }}>{ext}</p>
+                </div>
+                <ArrowRight
+                  size={14}
+                  style={{ color: T.hairlineStrong }}
+                  className="group-hover:translate-x-0.5 transition-all"
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </main>
     </div>

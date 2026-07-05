@@ -80,6 +80,9 @@ const Footer: React.FC = () => {
                 <p className="font-display text-sm font-semibold" style={{ color: T.text }}>
                   Prof. Ganesh Bagler
                 </p>
+                <p className="text-sm" style={{ color: "rgba(241,244,249,0.65)" }}>
+                  <b>HOD, Computational Biology Department</b>
+                </p>
               </li>
 
               {/* Email */}

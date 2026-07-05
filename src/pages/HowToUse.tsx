@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { BookOpen, FileText, Mail, Info, CheckCircle } from "lucide-react";
+import { FileText, Mail} from "lucide-react";
 import SequenceImg from "../images/Sequence.png";
 import BatchFileImg from "../images/Batch.png";
 
@@ -23,7 +23,7 @@ const FontLoader: React.FC = () => (
   `}</style>
 );
 
-type HelpTab = "overview" | "molecule" | "batchFile";
+type HelpTab = "sequence" | "batchFile";
 
 // ─── Step list ────────────────────────────────────────────────────────────────
 
@@ -56,11 +56,10 @@ const ImageBox: React.FC<{ label: string; Icon: React.ElementType; img: string }
 // ─── Main ─────────────────────────────────────────────────────────────────────
 
 const HowToUse: React.FC = () => {
-  const [tab, setTab] = useState<HelpTab>("overview");
+  const [tab, setTab] = useState<HelpTab>("sequence");
 
   const tabs: { id: HelpTab; Icon: React.ElementType; label: string }[] = [
-    { id: "overview", Icon: Info, label: "Overview" },
-    { id: "molecule", Icon: FileText, label: "Sequence" },
+    { id: "sequence", Icon: FileText, label: "Sequence" },
     { id: "batchFile", Icon: Mail, label: "Batch File" },
   ];
 
@@ -96,29 +95,7 @@ const HowToUse: React.FC = () => {
           {/* Content */}
           <div className="lg:col-span-3 space-y-5">
 
-            {tab === "overview" && (
-              <>
-                <ImageBox label="FoodEVPred — Platform Overview" Icon={Info} img={SequenceImg} />
-                <div className="rounded-2xl p-6" style={{ background: T.surface, border: `1px solid ${T.hairline}` }}>
-                  <h3 className="font-display text-sm font-semibold mb-4" style={{ color: T.text }}>Platform Highlights</h3>
-                  <div className="grid sm:grid-cols-2 gap-3">
-                    {[
-                      "3-class prediction: Milk EV, Plant EV, and Non-EV food-derived extracellular vesicle proteins",
-                      "ProtT5-XL protein language model (T5-3B encoder) with RFE-based feature selection (256 of 1024 dims)",
-                      "Stacked ensemble model: LR, SVM_RBF, and MLP base learners feeding an XGBoost meta-classifier",
-                      "Supports single protein sequence and batch file prediction (up to 50 sequences via file upload)",
-                    ].map((text, i) => (
-                      <div key={i} className="flex items-start gap-3 p-3.5 rounded-xl" style={{ background: T.ink, border: `1px solid ${T.hairline}` }}>
-                        <CheckCircle size={14} className="mt-0.5 flex-shrink-0" style={{ color: T.primary }} />
-                        <p className="text-xs leading-relaxed" style={{ color: T.muted }}>{text}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </>
-            )}
-
-            {tab === "molecule" && (
+            {tab === "sequence" && (
               <>
                 <ImageBox label="Single Protein Prediction" Icon={FileText} img={SequenceImg} />
                 <div className="rounded-2xl p-6" style={{ background: T.surface, border: `1px solid ${T.hairline}` }}>
@@ -153,7 +130,7 @@ const HowToUse: React.FC = () => {
                     ))}
                   </ol>
                   <div className="mt-5 p-4 rounded-xl text-xs" style={{ background: T.primaryDim, border: `1px solid rgba(31,158,136,0.25)`, color: T.text }}>
-                    <strong>Tip:</strong> Download sample files from the Home page to verify your data format before submitting a batch job.
+                    <strong>Tip:</strong> Download sample files from the Predict page to verify your data format before submitting a batch job.
                   </div>
                 </div>
               </>
