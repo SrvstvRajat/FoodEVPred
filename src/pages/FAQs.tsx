@@ -27,12 +27,12 @@ const faqs: FAQItem[] = [
     q: "What services does EVSource Predictor provide?",
     a: (
       <div className="text-sm leading-relaxed space-y-2" style={{ color: T.muted }}>
-        <p>EVSource Predictor offers multi-class classification of food-derived EV proteins:</p>
+        <p>FoodEVPred offers sequence-based classification of food-derived extracellular vesicle (EV) cargo proteins:</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li>Single protein sequence prediction with confidence scores</li>
-          <li>Batch prediction for up to 200 sequences (via file upload)</li>
-          <li>Access to curated EV protein datasets from 5 food sources</li>
-          <li>Results delivery via email as a structured CSV file</li>
+          <li>Real-time single protein sequence prediction with confidence scores</li>
+          <li>Batch-mode prediction for multiple sequences via file upload (up to 50 per batch)</li>
+          <li>Classification into three biologically distinct categories: Milk EV, Plant EV, and Non-EV</li>
+          <li>A public web server for both real-time and batch-mode analysis</li>
         </ul>
       </div>
     ),
@@ -41,27 +41,35 @@ const faqs: FAQItem[] = [
     q: "What features are used to represent protein sequences?",
     a: (
       <p className="text-sm leading-relaxed" style={{ color: T.muted }}>
-        We use two complementary representations: (1) contextual embeddings from Meta's pre-trained ESM2 protein language model, and (2) physicochemical features extracted using Biopython — including amino acid composition, dipeptide composition, molecular weight, and isoelectric point.
+        Each sequence is passed through ProtT5, a pre-trained protein language model, to extract biophysical embeddings that encode protein function, stability, and structural context. These embeddings are the sole input to the classifier — no handcrafted physicochemical features are used.
       </p>
     ),
   },
   {
     q: "What is the predictive performance of the model?",
     a: (
-      <p className="text-sm leading-relaxed" style={{ color: T.muted }}>
-        The stack ensemble model achieves approximately 89% accuracy and strong per-class F1 scores across all six source categories. Detailed metrics including confusion matrices and per-class precision/recall are available in the associated publication.
-      </p>
+      <div className="text-sm leading-relaxed space-y-2" style={{ color: T.muted }}>
+        <p>
+          The two-tier stacked ensemble (SVM, Logistic Regression, and MLP base learners with an XGBoost meta-learner) achieves an overall accuracy of 88.95% ± 1.26%, specificity of 94.24% ± 0.67%, and AUC of 97.32% ± 0.37%.
+        </p>
+        <p>One-vs-rest performance per class:</p>
+        <ul className="list-disc pl-5 space-y-1">
+          <li><strong>EV vs. Non-EV:</strong> 89.80% ± 0.93% accuracy, 96.64% ± 0.57% AUC</li>
+          <li><strong>Milk EV vs. Non-EV:</strong> 87.52% ± 1.21% accuracy, 94.39% ± 0.76% AUC</li>
+          <li><strong>Plant EV vs. Non-EV:</strong> 97.62% ± 0.39% accuracy, 99.74% ± 0.07% AUC</li>
+        </ul>
+      </div>
     ),
   },
   {
     q: "Which food sources can be predicted?",
     a: (
       <div className="text-sm leading-relaxed space-y-2" style={{ color: T.muted }}>
-        <p>The classifier supports six classes:</p>
+        <p>The classifier distinguishes three biologically distinct categories, trained on 6,353 non-redundant protein sequences curated from an initial set of 11,788:</p>
         <ul className="list-disc pl-5 space-y-1">
-          <li><strong>Animal-derived:</strong> Cow milk, Human milk</li>
-          <li><strong>Plant-derived:</strong> Citrus, Broccoli, Arabidopsis</li>
-          <li><strong>Negative class:</strong> Non-EV proteins</li>
+          <li><strong>Milk EV:</strong> Cargo proteins from animal milk-derived extracellular vesicles</li>
+          <li><strong>Plant EV:</strong> Cargo proteins from plant-derived extracellular vesicles</li>
+          <li><strong>Non-EV:</strong> Food proteins with no EV cargo signature</li>
         </ul>
       </div>
     ),
@@ -92,7 +100,7 @@ const faqs: FAQItem[] = [
         </div>
         <div>
           <p className="font-mono text-[11px] uppercase tracking-[0.12em] mb-1" style={{ color: T.primary }}>Backend</p>
-          <p>Python, Flask, MongoDB, Scikit-learn, Pandas, NumPy, ESM2</p>
+          <p>Python, Flask, MongoDB, Scikit-learn, XGBoost, Pandas, NumPy, ProtT5, SHAP</p>
         </div>
       </div>
     ),
@@ -114,7 +122,7 @@ const faqs: FAQItem[] = [
       <div className="font-mono text-sm rounded-lg p-4" style={{ background: T.ink, border: `1px solid ${T.hairline}` }}>
         <p className="font-mono text-[11px] uppercase tracking-[0.12em] mb-2" style={{ color: T.primary }}>Citation</p>
         <p className="italic leading-relaxed" style={{ color: T.muted }}>
-          [Author(s)]. FoodEVPred: A Sequence-Based Deep Learning Framework for Multi-Class Prediction of Food-Derived Extracellular Vesicle Cargo Proteins for Oral Therapeutic Delivery. [Journal], [2026].
+          [Author(s)]. FoodEVPred: A Sequence-Based Ensemble Learning Framework for Multi-Class Prediction of Food-Derived Extracellular Vesicle Cargo Proteins for Oral Therapeutic Delivery. [Journal], [2026].
         </p>
       </div>
     ),
@@ -122,7 +130,7 @@ const faqs: FAQItem[] = [
 ];
 
 const FAQs: React.FC = () => {
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const [openIndex,  setOpenIndex]  = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
 
   const filtered = faqs.filter(item =>
@@ -140,7 +148,7 @@ const FAQs: React.FC = () => {
           <h1 className="font-display text-4xl font-semibold tracking-tight mb-2" style={{ color: T.text }}>
             Frequently Asked Questions
           </h1>
-          <p style={{ color: T.muted }}>Find answers to common questions about EVSource Predictor.</p>
+          <p style={{ color: T.muted }}>Find answers to common questions about FoodEVPred.</p>
         </div>
 
         {/* Search */}
@@ -204,20 +212,6 @@ const FAQs: React.FC = () => {
               );
             })
           )}
-        </div>
-
-        {/* Contact nudge */}
-        <div className="mt-8 rounded-xl p-5 flex items-center gap-4" style={{ background: T.primaryDim, border: `1px solid rgba(31,158,136,0.25)` }}>
-          <HelpCircle size={18} className="flex-shrink-0" style={{ color: T.primary }} />
-          <div>
-            <p className="text-sm font-semibold mb-0.5" style={{ color: T.text }}>Still have questions?</p>
-            <p className="text-xs" style={{ color: T.muted }}>
-              Reach us at{" "}
-              <a href="mailto:bagler+foodevpred@iiitd.ac.in" className="font-semibold hover:underline" style={{ color: T.primary }}>
-                bagler+foodevpred@iiitd.ac.in
-              </a>
-            </p>
-          </div>
         </div>
 
       </main>
