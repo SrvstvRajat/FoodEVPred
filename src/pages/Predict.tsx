@@ -366,12 +366,6 @@ const Predict: React.FC = () => {
 
         {/* Header */}
         <div className="mb-10">
-          <div className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 mb-5 border" style={{ borderColor: T.hairlineStrong, background: T.primaryDim }}>
-            <Dna size={13} style={{ color: T.primary }} />
-            <span className="font-mono text-[11px] uppercase tracking-[0.15em]" style={{ color: T.primary }}>
-              sequence classifier
-            </span>
-          </div>
           <h1 className="font-display text-4xl font-semibold tracking-tight mb-3" style={{ color: T.text }}>
             Run a Prediction
           </h1>

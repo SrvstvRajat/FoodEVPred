@@ -24,7 +24,7 @@ type FAQItem = { q: string; a: React.ReactNode };
 
 const faqs: FAQItem[] = [
   {
-    q: "What services does EVSource Predictor provide?",
+    q: "What services does FoodEVPred provide?",
     a: (
       <div className="text-sm leading-relaxed space-y-2" style={{ color: T.muted }}>
         <p>FoodEVPred offers sequence-based classification of food-derived extracellular vesicle (EV) cargo proteins:</p>
@@ -117,7 +117,7 @@ const faqs: FAQItem[] = [
     ),
   },
   {
-    q: "How do I cite EVSource Predictor?",
+    q: "How do I cite FoodEVPred?",
     a: (
       <div className="font-mono text-sm rounded-lg p-4" style={{ background: T.ink, border: `1px solid ${T.hairline}` }}>
         <p className="font-mono text-[11px] uppercase tracking-[0.12em] mb-2" style={{ color: T.primary }}>Citation</p>
@@ -144,7 +144,6 @@ const FAQs: React.FC = () => {
 
         {/* Header */}
         <div className="mb-10">
-          <p className="font-mono text-[11px] uppercase tracking-[0.15em] mb-2.5" style={{ color: T.primary }}>Help center</p>
           <h1 className="font-display text-4xl font-semibold tracking-tight mb-2" style={{ color: T.text }}>
             Frequently Asked Questions
           </h1>
