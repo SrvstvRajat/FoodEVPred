@@ -4,15 +4,6 @@ import {
 } from "lucide-react";
 
 
-const FontLoader: React.FC = () => (
-  <style>{`
-    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
-    .font-display { font-family: 'Space Grotesk', sans-serif; }
-    .font-body { font-family: 'Inter', sans-serif; }
-    .font-mono { font-family: 'IBM Plex Mono', monospace; }
-  `}</style>
-);
-
 const T = {
   ink: "#F4F8F5",
   surface: "#FFFFFF",
@@ -107,6 +98,46 @@ const downloadSample = (filename: string, content: string) => {
   URL.revokeObjectURL(url);
 };
 
+// ─── Batch file sequence-count validation ─────────────────────────────────────
+
+const MAX_BATCH_SEQUENCES = 50;
+
+/**
+ * Counts sequences in a batch file's text contents based on its extension:
+ * - .fasta/.fa: number of ">" header lines (falls back to line count if no headers found)
+ * - .csv: number of data rows, skipping a lowercase header row like "sequence,label"
+ * - .txt (default): one sequence per non-empty line
+ */
+const countSequencesInFile = (text: string, filename: string): number => {
+  const ext = filename.split(".").pop()?.toLowerCase() || "";
+  const lines = text.split(/\r?\n/).map((l) => l.trim()).filter((l) => l.length > 0);
+
+  if (ext === "fasta" || ext === "fa") {
+    const headerCount = lines.filter((l) => l.startsWith(">")).length;
+    return headerCount > 0 ? headerCount : lines.length;
+  }
+
+  if (ext === "csv") {
+    const dataLines = lines.filter((line, i) => {
+      // Skip a header row (e.g. "sequence,label") — sequences are uppercase, headers aren't.
+      if (i === 0 && line === line.toLowerCase()) return false;
+      return true;
+    });
+    return dataLines.length;
+  }
+
+  // .txt — one sequence per line
+  return lines.length;
+};
+
+const readFileAsText = (file: File): Promise<string> =>
+  new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = () => reject(reader.error);
+    reader.readAsText(file);
+  });
+
 // ─── Toast ────────────────────────────────────────────────────────────────────
 
 const ToastMessage: React.FC<{ toast: Toast; onClose: () => void }> = ({ toast, onClose }) => {
@@ -149,7 +180,7 @@ const ResultPanel: React.FC<{ result: PredictionResult }> = ({ result }) => {
         </div>
         <div className="flex-1">
           <p className="font-mono text-[11px] uppercase tracking-[0.15em] mb-1.5" style={{ color: T.muted }}>Predicted Class</p>
-          <p className="font-display text-3xl font-semibold mb-2" style={{ color: info.color }}>
+          <p className="font-serif text-3xl font-semibold mb-2" style={{ color: info.color }}>
             {result.predicted_class}
           </p>
           {result.confidence !== undefined && (
@@ -210,6 +241,7 @@ const Predict: React.FC = () => {
   const [seqElapsed, setSeqElapsed] = useState(0);
 
   const [batchFile, setBatchFile] = useState<File | null>(null);
+  const [batchSeqCount, setBatchSeqCount] = useState<number | null>(null);
   const [batchName, setBatchName] = useState("");
   const [batchEmail, setBatchEmail] = useState("");
   const [batchLoading, setBatchLoading] = useState(false);
@@ -305,6 +337,46 @@ const Predict: React.FC = () => {
     }
   };
 
+  const handleBatchFileSelect = async (file: File | null) => {
+    if (!file) {
+      setBatchFile(null);
+      setBatchSeqCount(null);
+      return;
+    }
+
+    try {
+      const text = await readFileAsText(file);
+      const count = countSequencesInFile(text, file.name);
+
+      if (count > MAX_BATCH_SEQUENCES) {
+        setBatchFile(null);
+        setBatchSeqCount(null);
+        if (batchFileRef.current) batchFileRef.current.value = "";
+        setBatchToast({
+          type: "error",
+          message: `This file has ${count} sequences — the batch limit is ${MAX_BATCH_SEQUENCES}. Please split it into smaller files.`,
+        });
+        return;
+      }
+
+      if (count === 0) {
+        setBatchFile(null);
+        setBatchSeqCount(null);
+        if (batchFileRef.current) batchFileRef.current.value = "";
+        setBatchToast({ type: "error", message: "No sequences were found in this file. Check the format and try again." });
+        return;
+      }
+
+      setBatchFile(file);
+      setBatchSeqCount(count);
+      setBatchToast(null);
+    } catch {
+      setBatchFile(null);
+      setBatchSeqCount(null);
+      setBatchToast({ type: "error", message: "Could not read this file. Please try a different one." });
+    }
+  };
+
   const handleBatchSubmit = async () => {
     if (!batchName.trim()) {
       setBatchToast({ type: "error", message: "Please enter your name." });
@@ -317,6 +389,10 @@ const Predict: React.FC = () => {
     }
     if (!batchFile) {
       setBatchToast({ type: "error", message: "Select a sequence file to upload." });
+      return;
+    }
+    if (batchSeqCount !== null && batchSeqCount > MAX_BATCH_SEQUENCES) {
+      setBatchToast({ type: "error", message: `This file exceeds the ${MAX_BATCH_SEQUENCES}-sequence limit.` });
       return;
     }
 
@@ -346,6 +422,7 @@ const Predict: React.FC = () => {
         message: json.message || `Job submitted! A confirmation has been sent to ${batchEmail}. Results will follow by email once processing completes.`,
       });
       setBatchFile(null);
+      setBatchSeqCount(null);
       setBatchName("");
       setBatchEmail("");
     } catch (e: any) {
@@ -360,13 +437,12 @@ const Predict: React.FC = () => {
   const inputStyle: React.CSSProperties = { background: T.surface, border: `1px solid ${T.hairlineStrong}`, color: T.text };
 
   return (
-    <div className="min-h-screen pb-24 font-body" style={{ background: T.ink }}>
-      <FontLoader />
+    <div className="min-h-screen pb-24 font-serif" style={{ background: T.ink }}>
       <main className="max-w-4xl mx-auto px-5 py-14">
 
         {/* Header */}
         <div className="mb-10">
-          <h1 className="font-display text-4xl font-semibold tracking-tight mb-3" style={{ color: T.text }}>
+          <h1 className="font-serif text-4xl font-semibold tracking-tight mb-3" style={{ color: T.text }}>
             Run a Prediction
           </h1>
           <p className="text-base max-w-2xl leading-relaxed" style={{ color: T.muted }}>
@@ -480,7 +556,7 @@ const Predict: React.FC = () => {
                 /* ── Confirmation state ── */
                 <div className="rounded-xl p-8 text-center" style={{ background: T.primaryDim, border: "1px solid rgba(31,158,136,0.3)" }}>
                   <CheckCircle2 size={32} className="mx-auto mb-3" style={{ color: T.primary }} />
-                  <p className="font-display text-lg font-semibold mb-2" style={{ color: T.text }}>Job Submitted!</p>
+                  <p className="font-serif text-lg font-semibold mb-2" style={{ color: T.text }}>Job Submitted!</p>
                   <p className="text-sm" style={{ color: T.muted }}>
                     A confirmation has been sent to your email. Your results CSV will follow once processing completes.
                   </p>
@@ -548,11 +624,14 @@ const Predict: React.FC = () => {
                     {batchFile ? (
                       <div>
                         <p className="text-sm font-bold" style={{ color: T.text }}>{batchFile.name}</p>
-                        <p className="text-xs mt-1" style={{ color: T.muted }}>{(batchFile.size / 1024).toFixed(1)} KB</p>
+                        <p className="text-xs mt-1" style={{ color: T.muted }}>
+                          {(batchFile.size / 1024).toFixed(1)} KB
+                          {batchSeqCount !== null && ` · ${batchSeqCount} sequence${batchSeqCount === 1 ? "" : "s"} detected`}
+                        </p>
                         <button
                           className="text-xs mt-2 underline"
                           style={{ color: T.muted }}
-                          onClick={(e) => { e.stopPropagation(); setBatchFile(null); }}
+                          onClick={(e) => { e.stopPropagation(); handleBatchFileSelect(null); }}
                         >
                           Remove
                         </button>
@@ -569,7 +648,7 @@ const Predict: React.FC = () => {
                       type="file"
                       accept=".txt,.csv,.fasta"
                       className="hidden"
-                      onChange={(e) => setBatchFile(e.target.files?.[0] || null)}
+                      onChange={(e) => handleBatchFileSelect(e.target.files?.[0] || null)}
                     />
                   </div>
 
