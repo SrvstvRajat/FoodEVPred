@@ -32,7 +32,7 @@ const Footer: React.FC = () => {
       <div className="max-w-7xl mx-auto px-6 py-14">
 
         {/* TOP SECTION */}
-        <div className="grid md:grid-cols-3 gap-12 mb-10">
+        <div className="grid md:grid-cols-3 gap-12 mb-4 mt--8">
 
           {/* Column 1: Logo & Description */}
           <div className="md:col-span-2">
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
       
 
             {/* IIITD Logo */}
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-4 mb-5">
               <img
                 src={IIITD}
                 alt="IIITD Logo"
@@ -64,6 +64,52 @@ const Footer: React.FC = () => {
                 }}
               />
             </div>
+
+            {/* Social Icons */}
+            <div className="flex items-center gap-4 mb-5">
+
+             <div className="flex items-center gap-4">
+            {[
+              { Icon: Github, label: "GitHub", href: "https://github.com/cosylabiiit" },
+              { Icon: Linkedin, label: "LinkedIn", href: "https://www.linkedin.com/company/cosylab-iiitd/" },
+              { Icon: Twitter, label: "Twitter", href: "https://twitter.com/gansbags" },
+            ].map(({ Icon, label, href }) => (
+              <a
+                key={label}
+                href={href}
+                aria-label={label}
+                className="w-9 h-9 rounded-lg flex items-center justify-center transition-all"
+                style={{
+                  background: "rgba(241,244,249,0.04)",
+                  border: "1px solid rgba(241,244,249,0.08)",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "rgba(45,212,191,0.12)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(45,212,191,0.3)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLElement).style.background = "rgba(241,244,249,0.04)";
+                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(241,244,249,0.08)";
+                }}
+              >
+                <Icon size={16} style={{ color: "rgba(241,244,249,0.5)" }} />
+              </a>
+            ))}
+          </div>
+          {/* CoSyLab Link */}
+          <div>
+          <a
+                  href="https://cosylab.iiitd.edu.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"
+                  style={{ color: T.primary }}
+                >
+                  <span>Visit CoSyLab</span>
+                  <ExternalLink size={12} />
+                </a>
+                </div>
+                </div>
           </div>
 
           {/* Column 2: Contact Info */}
@@ -114,20 +160,6 @@ const Footer: React.FC = () => {
                   IIIT-Delhi, India
                 </span>
               </li>
-
-              {/* CoSyLab Link */}
-              <li className="pt-1">
-                <a
-                  href="https://cosylab.iiitd.edu.in/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 text-sm font-semibold transition-colors"
-                  style={{ color: T.primary }}
-                >
-                  <span>Visit CoSyLab</span>
-                  <ExternalLink size={12} />
-                </a>
-              </li>
             </ul>
           </div>
         </div>
@@ -136,42 +168,10 @@ const Footer: React.FC = () => {
         <div style={{ borderTop: "1px solid rgba(241,244,249,0.08)" }} className="mb-7" />
 
         {/* BOTTOM SECTION */}
-        <div className="flex flex-col md:flex-row justify-between items-center gap-5">
-
-          {/* Social Icons */}
-          <div className="flex items-center gap-2">
-            {[
-              { Icon: Github, label: "GitHub" },
-              { Icon: Linkedin, label: "LinkedIn" },
-              { Icon: Twitter, label: "Twitter" },
-              { Icon: Facebook, label: "Facebook" },
-              { Icon: Instagram, label: "Instagram" },
-            ].map(({ Icon, label }) => (
-              <a
-                key={label}
-                href="#"
-                aria-label={label}
-                className="w-9 h-9 rounded-lg flex items-center justify-center transition-all"
-                style={{
-                  background: "rgba(241,244,249,0.04)",
-                  border: "1px solid rgba(241,244,249,0.08)",
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "rgba(45,212,191,0.12)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(45,212,191,0.3)";
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.background = "rgba(241,244,249,0.04)";
-                  (e.currentTarget as HTMLElement).style.borderColor = "rgba(241,244,249,0.08)";
-                }}
-              >
-                <Icon size={16} style={{ color: "rgba(241,244,249,0.5)" }} />
-              </a>
-            ))}
-          </div>
+        <div className="flex flex-col md:flex-row justify-center items-center gap-5">
 
           {/* Copyright */}
-          <div className="text-center md:text-right">
+          <div className="text-center md:text-center">
             <p className="text-sm mb-0.5" style={{ color: "rgba(241,244,249,0.4)" }}>
               © 2026 FoodEVPred. All rights reserved.
             </p>

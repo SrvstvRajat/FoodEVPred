@@ -41,7 +41,7 @@ const faqs: FAQItem[] = [
     q: "What features are used to represent protein sequences?",
     a: (
       <p className="text-sm leading-relaxed" style={{ color: T.muted }}>
-        Each sequence is passed through ProtT5, a pre-trained protein language model, to extract biophysical embeddings that encode protein function, stability, and structural context. These embeddings are the sole input to the classifier — no handcrafted physicochemical features are used.
+        Each sequence is passed through ProtT5, a pre-trained protein language model, to extract biophysical embeddings that encode protein function, stability, and structural context. These embeddings are the sole input to the classifier, no handcrafted physicochemical features are used.
       </p>
     ),
   },
